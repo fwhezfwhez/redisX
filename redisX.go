@@ -170,6 +170,7 @@ func checkLength(command string,args...interface{}) bool{
 }
 
 
+//Abandoned
 func GetRedis(url string) *redis.Pool {
 	fmt.Println("get redis url",url)
 	var rs *redis.Pool
