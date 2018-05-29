@@ -123,11 +123,13 @@ func (tran *Transaction) Do(command string, args ...interface{}) (interface{}, e
 
 //to make cached lastKV flushed
 func (tran *Transaction) Commit() {
+	fmt.Println("commit,a transaction done")
 	tran.LastKV = make(map[string]interface{})
 }
 
 //rollBack
 func (tran *Transaction) RollBack() {
+	fmt.Println("rollback,please check error")
 	if len(tran.LastKV)!=0{
 		setMap :=(tran.LastKV["SET"]).(map[interface{}]interface{})
 		if len(setMap)!=0{
