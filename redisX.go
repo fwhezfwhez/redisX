@@ -67,7 +67,6 @@ func (r RedisX) BeginTran() *Transaction {
 	HSET:=make(map[interface{}]interface{})
 	lastKV["HSET"]=HSET
 	lastKV["SET"]=SET
-	fmt.Println(r.Pool)
 	con :=Connection{Conn: r.Pool.Get()}
 	return &Transaction{
 		Con:con,
@@ -123,7 +122,7 @@ func (tran *Transaction) Do(command string, args ...interface{}) (interface{}, e
 
 //to make cached lastKV flushed
 func (tran *Transaction) Commit() {
-	fmt.Println("commit,a transaction done")
+	fmt.Println("commit a transaction done")
 	tran.LastKV = make(map[string]interface{})
 }
 
