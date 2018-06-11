@@ -13,8 +13,12 @@ func main(){
 	redisDb:= redisX.RedisX{}
 	redisDb.DataSource("redis://localhost:6379")
 
+
+
 	tran := redisDb.BeginTran()
 	tran.Begin()
+
+
 	defer tran.Close()
 	_,er:=tran.Do("SET","username","ft2")
 	if er!=nil{

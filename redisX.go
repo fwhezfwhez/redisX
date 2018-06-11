@@ -122,8 +122,13 @@ func (tran *Transaction) Do(command string, args ...interface{}) (interface{}, e
 
 //to make cached lastKV flushed
 func (tran *Transaction) Commit() {
+	lastKV:=make(map[string]interface{})
+	SET:=make(map[interface{}]interface{})
+	HSET:=make(map[interface{}]interface{})
+	lastKV["HSET"]=HSET
+	lastKV["SET"]=SET
 	fmt.Println("commit a transaction done")
-	tran.LastKV = make(map[string]interface{})
+	tran.LastKV = lastKV
 }
 
 //rollBack
