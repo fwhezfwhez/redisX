@@ -1,3 +1,5 @@
+**note**
+
 1. more details referring '1728565484@qq.com' or submit your issue on github
 
 2. redisX is based on https://github.com/garyburd/redigo/
@@ -19,3 +21,73 @@ For examle:
     tran.RollBack()
  ```
  **data value has been set ,but key2 has been rollBack.**
+
+**start**
+
+go get github.com/fwhezfwhez/redisX
+
+**example**
+```go
+package main
+
+import (
+	"github.com/fwhezfwhez/redisX"
+	"log"
+)
+
+func init(){
+	log.SetFlags(log.LstdFlags | log.Llongfile)
+}
+func main(){
+	//
+	redisDb:= redisX.RedisX{}
+	redisDb.DataSource("redis://localhost:6379")
+
+
+
+	tran := redisDb.BeginTran()
+	tran.Begin()
+
+
+	defer tran.Close()
+	_,er:=tran.Do("SET","username","ft2")
+	if er!=nil{
+		log.Println(er.Error())
+		tran.RollBack()
+		return
+	}
+	_,er=tran.Do("HSET","user","username2","ft2")
+
+	if er!=nil{
+		log.Println(er.Error())
+		tran.RollBack()
+		return
+	}
+
+	_,er=tran.Do("DEL","username")
+
+	if er!=nil{
+		log.Println(er.Error())
+		tran.RollBack()
+		return
+	}
+	//tran.RollBack()
+	_,er=tran.Do("HDEL","user","username")
+
+	if er!=nil{
+		log.Println(er.Error())
+		tran.RollBack()
+		return
+	}
+	//tran.RollBack()
+	rs,er:=tran.Do("HGET","user","username2")
+	if er!=nil{
+		log.Println(er.Error())
+		tran.RollBack()
+		return
+	}
+	tran.Commit()
+	log.Println(redisX.String(rs,nil))
+}
+
+```
